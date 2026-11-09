@@ -21,14 +21,16 @@ class MainActivity2 : AppCompatActivity() {
 
     private var currentCategory: String = "Distance"
 
-    // Factores de conversión genéricos respecto a una unidad base (Sin cadenas if-else)
+    // 1. DISTANCE (Base: Metros)
     private val distanceFactors = mapOf(
         "Metros" to 1.0,
         "Kilómetros" to 1000.0,
         "Millas" to 1609.34,
-        "Pies" to 0.3048
+        "Pies" to 0.3048,
+        "Pulgadas" to 0.0254
     )
 
+    // 2. MASS (Base: Gramos)
     private val massFactors = mapOf(
         "Gramos" to 1.0,
         "Kilogramos" to 1000.0,
@@ -36,11 +38,48 @@ class MainActivity2 : AppCompatActivity() {
         "Onzas" to 28.3495
     )
 
+    // 3. VOLUME (Base: Litros)
+    private val volumeFactors = mapOf(
+        "Litros" to 1.0,
+        "Mililitros" to 0.001,
+        "Galones" to 3.78541
+    )
+
+    // 4. TIME (Base: Segundos)
+    private val timeFactors = mapOf(
+        "Segundos" to 1.0,
+        "Minutos" to 60.0,
+        "Horas" to 3600.0,
+        "Días" to 86400.0
+    )
+
+    // 5. DIGITAL INFORMATION (Base: Bytes)
+    private val digitalFactors = mapOf(
+        "Bytes" to 1.0,
+        "Kilobytes" to 1024.0,
+        "Megabytes" to 1048576.0,
+        "Gigabytes" to 1073741824.0
+    )
+
+    // 6. SPEED (Base: m/s)
+    private val speedFactors = mapOf(
+        "m/s" to 1.0,
+        "km/h" to 0.277778,
+        "mph" to 0.44704
+    )
+
+    // 7. CURRENCY (Base: Euros - Tasas de ejemplo según enunciado)
+    private val currencyFactors = mapOf(
+        "Euros" to 1.0,
+        "Dólares (USD)" to 0.92,
+        "Libras (GBP)" to 1.17,
+        "Yenes (JPY)" to 0.0062
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main2) // Apunta a activity_main2.xml
+        setContentView(R.layout.activity_main2)
 
-        // Inicializar vistas
         tvCategoryTitle = findViewById(R.id.tvCategoryTitle)
         etInputValue = findViewById(R.id.etInputValue)
         spFromUnit = findViewById(R.id.spFromUnit)
@@ -49,18 +88,16 @@ class MainActivity2 : AppCompatActivity() {
         tvResult = findViewById(R.id.tvResult)
         btnBack = findViewById(R.id.btnBack)
 
-        // Recibir la categoría enviada desde MainActivity
+        // Recibir categoría enviada por el compañero (Importante: acuerdo de clave "EXTRA_CATEGORY")
         currentCategory = intent.getStringExtra("EXTRA_CATEGORY") ?: "Distance"
         tvCategoryTitle.text = "Categoría: $currentCategory"
 
         setupSpinners()
 
-        // Botón para calcular la conversión
         btnConvert.setOnClickListener {
             performConversion()
         }
 
-        // Botón para volver a la primera actividad
         btnBack.setOnClickListener {
             finish()
         }
@@ -68,7 +105,13 @@ class MainActivity2 : AppCompatActivity() {
 
     private fun setupSpinners() {
         val units = when (currentCategory) {
+            "Temperature" -> listOf("Celsius", "Fahrenheit", "Kelvin")
             "Mass" -> massFactors.keys.toList()
+            "Volume" -> volumeFactors.keys.toList()
+            "Time" -> timeFactors.keys.toList()
+            "Digital Information" -> digitalFactors.keys.toList()
+            "Speed" -> speedFactors.keys.toList()
+            "Currency" -> currencyFactors.keys.toList()
             else -> distanceFactors.keys.toList()
         }
 
@@ -81,7 +124,6 @@ class MainActivity2 : AppCompatActivity() {
     private fun performConversion() {
         val inputText = etInputValue.text.toString().trim()
 
-        // Validaciones obligatorias con Snackbar (Sin usar Toast)
         if (inputText.isEmpty()) {
             Snackbar.make(findViewById(R.id.main), "Por favor, introduce un valor", Snackbar.LENGTH_SHORT).show()
             return
@@ -99,11 +141,20 @@ class MainActivity2 : AppCompatActivity() {
         val result: Double = if (currentCategory == "Temperature") {
             convertTemperature(inputVal, fromUnit, toUnit)
         } else {
-            val factors = if (currentCategory == "Mass") massFactors else distanceFactors
+            val factors = when (currentCategory) {
+                "Mass" -> massFactors
+                "Volume" -> volumeFactors
+                "Time" -> timeFactors
+                "Digital Information" -> digitalFactors
+                "Speed" -> speedFactors
+                "Currency" -> currencyFactors
+                else -> distanceFactors
+            }
+
             val fromFactor = factors[fromUnit] ?: 1.0
             val toFactor = factors[toUnit] ?: 1.0
 
-            // Fórmula genérica: (Valor * FactorOrigen) / FactorDestino
+            // Cálculo genérico: (Valor * Factor Origen) / Factor Destino
             (inputVal * fromFactor) / toFactor
         }
 

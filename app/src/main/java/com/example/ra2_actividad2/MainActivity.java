@@ -67,14 +67,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Requisito PDF: Pasar la categoría a la segunda actividad (MainActivity2) usando Intent
+        // PASAMOS A SEGUNDA ACTIVIDAD AQUI
         btnNextActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String selectedCategory = categories[spCategory.getSelectedItemPosition()];
                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                 intent.putExtra("SELECTED_CATEGORY", selectedCategory);
-                startActivity(intent);
+                //ANIMACION AQUI
+                android.app.ActivityOptions options = android.app.ActivityOptions.makeCustomAnimation(
+                        MainActivity.this,
+                        android.R.anim.slide_in_left,
+                        android.R.anim.slide_out_right
+                );
+                startActivity(intent, options.toBundle());
             }
         });
     }
@@ -85,50 +91,49 @@ public class MainActivity extends AppCompatActivity {
     private void loadCategoryBitmap(String categoryName) {
         int drawableResId;
 
-        // Usa una imagen por defecto (o los drawables que añadas a res/drawable)
         switch (categoryName) {
             case "Distance":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_distance;
                 break;
             case "Temperature":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_temperature;
                 break;
             case "Volume":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_volume;
                 break;
             case "Mass and Weight":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_mass;
                 break;
             case "Time":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_time;
                 break;
             case "Digital Information":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_digital;
                 break;
             case "Currency":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_currency;
                 break;
             case "Area":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_area;
                 break;
             case "Speed":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_speed;
                 break;
             case "Pressure":
-                drawableResId = R.drawable.ic_launcher_foreground;
+                drawableResId = R.drawable.img_pressure;
                 break;
             default:
                 drawableResId = R.drawable.ic_launcher_foreground;
                 break;
         }
 
-        // Carga explícita con la clase Bitmap
+        // Carga explícita mediante la clase Bitmap exigida en el enunciado
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), drawableResId);
 
         if (bitmap != null) {
             imgCategoryBitmap.setImageBitmap(bitmap);
         } else {
-            Snackbar.make(mainLayout, "Error al cargar la imagen", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(mainLayout, "Error al cargar la imagen de " + categoryName, Snackbar.LENGTH_SHORT).show();
         }
     }
 }

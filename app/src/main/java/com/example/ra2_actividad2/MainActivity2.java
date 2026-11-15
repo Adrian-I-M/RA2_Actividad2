@@ -37,6 +37,8 @@ public class MainActivity2 extends AppCompatActivity {
     private final Map<String, Double> digitalFactors = new LinkedHashMap<>();
     private final Map<String, Double> speedFactors = new LinkedHashMap<>();
     private final Map<String, Double> currencyFactors = new LinkedHashMap<>();
+    private final Map<String, Double> areaFactors = new LinkedHashMap<>();
+    private final Map<String, Double> pressureFactors = new LinkedHashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +55,8 @@ public class MainActivity2 extends AppCompatActivity {
         tvResult = findViewById(R.id.tvResult);
         btnBack = findViewById(R.id.btnBack);
 
-        String extra = getIntent().getStringExtra("EXTRA_CATEGORY");
+        // Conectado con la clave exacta enviada desde MainActivity
+        String extra = getIntent().getStringExtra("SELECTED_CATEGORY");
         if (extra != null && !extra.isEmpty()) {
             currentCategory = extra;
         }
@@ -103,18 +106,30 @@ public class MainActivity2 extends AppCompatActivity {
         currencyFactors.put("Dólares (USD)", 0.92);
         currencyFactors.put("Libras (GBP)", 1.17);
         currencyFactors.put("Yenes (JPY)", 0.0062);
+
+        areaFactors.put("Metros cuadrados", 1.0);
+        areaFactors.put("Kilómetros cuadrados", 1000000.0);
+        areaFactors.put("Hectáreas", 10000.0);
+        areaFactors.put("Pies cuadrados", 0.092903);
+
+        pressureFactors.put("Pascales", 1.0);
+        pressureFactors.put("Bares", 100000.0);
+        pressureFactors.put("Atmósferas", 101325.0);
+        pressureFactors.put("PSI", 6894.76);
     }
 
     private void setupSpinners() {
         List<String> units;
         switch (currentCategory) {
             case "Temperature": units = Arrays.asList("Celsius", "Fahrenheit", "Kelvin"); break;
-            case "Mass": units = new ArrayList<>(massFactors.keySet()); break;
+            case "Mass and Weight": units = new ArrayList<>(massFactors.keySet()); break;
             case "Volume": units = new ArrayList<>(volumeFactors.keySet()); break;
             case "Time": units = new ArrayList<>(timeFactors.keySet()); break;
             case "Digital Information": units = new ArrayList<>(digitalFactors.keySet()); break;
             case "Speed": units = new ArrayList<>(speedFactors.keySet()); break;
             case "Currency": units = new ArrayList<>(currencyFactors.keySet()); break;
+            case "Area": units = new ArrayList<>(areaFactors.keySet()); break;
+            case "Pressure": units = new ArrayList<>(pressureFactors.keySet()); break;
             default: units = new ArrayList<>(distanceFactors.keySet()); break;
         }
 
@@ -152,12 +167,14 @@ public class MainActivity2 extends AppCompatActivity {
         } else {
             Map<String, Double> factors;
             switch (currentCategory) {
-                case "Mass": factors = massFactors; break;
+                case "Mass and Weight": factors = massFactors; break;
                 case "Volume": factors = volumeFactors; break;
                 case "Time": factors = timeFactors; break;
                 case "Digital Information": factors = digitalFactors; break;
                 case "Speed": factors = speedFactors; break;
                 case "Currency": factors = currencyFactors; break;
+                case "Area": factors = areaFactors; break;
+                case "Pressure": factors = pressureFactors; break;
                 default: factors = distanceFactors; break;
             }
 

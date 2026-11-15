@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,36 +9,41 @@
 
     <TextView
         android:id="@+id/tvCategoryTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Categoría"
+        android:text="@string/categor_a"
+        android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="24dp" />
 
     <EditText
         android:id="@+id/etInputValue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Introduce un valor"
-        android:inputType="numberDecimal" />
+        android:hint="@string/introduce_un_valor"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal|numberSigned" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="De:"
-        android:layout_marginTop="10dp" />
+        android:text="@string/de"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp" />
 
     <Spinner
         android:id="@+id/spFromUnit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="A:"
-        android:layout_marginTop="10dp" />
+        android:text="@string/a"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp" />
 
     <Spinner
         android:id="@+id/spToUnit"
@@ -48,22 +54,26 @@
         android:id="@+id/btnConvert"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Convertir" />
+        android:layout_marginTop="32dp"
+        android:text="@string/convertir" />
 
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        tools:text="Resultado: 25.50" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Volver" />
+        style="?attr/materialButtonOutlinedStyle"
+        android:text="@string/volver" />
 
 </LinearLayout>

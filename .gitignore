@@ -1,0 +1,12 @@
+*.iml
+.gradle
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.DS_Store
+
+# Ignorar la carpeta .idea entera y no solo subcarpetas
+.idea/
+/.idea/
